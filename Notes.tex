@@ -18,7 +18,7 @@
 \newcommand{\hlred}[1]{{\sethlcolor{red2}\hl{#1}}}
 \newcommand{\hlpurple}[1]{{\sethlcolor{purple2}\hl{#1}}}
 
-\bibliographystyle{abbrv} % We choose the "plain" reference style
+\bibliographystyle{unsrt}%abbrv} % We choose the "plain" reference style
 
 \title{Tips/Tricks and Notes to Simulation Tools}
 \author{Danush Shekar}
@@ -34,51 +34,38 @@
 \abstract{This is my attempt in saving an account of all tips/tricks, notes, and discussions of the simulation tools I have used (mostly related to HEP simulations). In theory, this is also a note to questions and answers I encountered while I studied the subject, and that this notebook should serve as a reference for the doubts my mind stumbles upon in the future.}
 
 \subsection*{Colour legend}
-Like all other notebooks of mine, I follow a highlighting scheme where different highlight colors have different meaning:
+This note will follow a highlighting scheme where text highlighted in different colors mean the following:
+\newline
 \hlyellow{Yellow coloured text} - Doubts, or sentences that are to be clarified/understood later.\\
 \hlgreen{Green coloured text} - Some takeaways.\\
-\hlred{Red coloured text} - Mistakes/typos.\\
-\hlpurple{Purple coloured text} - Beautiful sentences - Interesting and unique points, that often are not mentioned explicitly in textbooks/literature.\\
+%\hlred{Red coloured text} - Mistakes/typos.\\
+\hlpurple{Purple coloured text} - Interesting and unique points, that often are not mentioned explicitly in textbooks/literature.\\
 
-\section{Weightfield}
-The WeightField (WF) software is a tool used to simulate a variety of silicon detectors: different versions have been updated over time to study a variety of silicon sensors. Among other things, WF can calculate the weighting field, the induced signal, and the electronic response of the detector. The manual for this version can be found at \href{http://personalpages.to.infn.it/~cartigli/Weightfield2/Manual_files/Manual_Weightfield.pdf}{here}.
+\section{About}
+The WeightField\footnote{The manual for this (first) version can be found at \href{http://personalpages.to.infn.it/~cartigli/Weightfield2/Manual_files/Manual_Weightfield.pdf}{here}} (WF) software is a tool used to simulate a variety of silicon detectors: different versions have been updated over time to study a variety of silicon sensors. As the name suggest, the WeightField2\footnote{Main link to manuals/guides - \href{http://personalpages.to.infn.it/~cartigli/Weightfield2/Manual.html}{http://personalpages.to.infn.it/~cartigli/Weightfield2/Manual.html}.} (WF2) software is the second iteration of WF. The weighting potential is calculated by solving for the Laplace equation using numerical methods (which also involves interpolation), and the induced current is calculated using the Shockley-Ramo theorem. An important piece of information that you probably should keep at the back of your head is that ``the backplane is at the bottom and the strips on the top edge with the readout strip being always centered".
 
-\subsection{Numerical methods used}
-
-\section{Weightfield2}
-The WeightField2\footnote{Main link to manuals/guides - \href{http://personalpages.to.infn.it/~cartigli/Weightfield2/Manual.html}{http://personalpages.to.infn.it/~cartigli/Weightfield2/Manual.html}.} (WF2) software is the second iteration of WF. The weighting potential is calculated by solving for the Laplace equation using numerical methods (which also involves interpolation), and the induced current is calculated using the Shockley-Ramo theorem. While mostly similar to WF, the two versions are different in the following aspects:
-\begin{enumerate}
-    \item Gain configuration - Contains the option to add a gain layer (for LGAD simulations!?): with options like dopant, dopin concentration, choice of the gain addition as explained by different models, etc.
-    \item Electronics - The option to study response from readout electronics through output-plots from electronic components (eg - oscilloscope).
-    \item Incident particle properties - Type of particles, and their energy distribution.
-    \item Ability to control the precision of signal calculations.
-    \item Irradiation option - \hlyellow{to be updated after I learn what these options do. More details can be found in WF2 hidden manual.}
-    \item File Management - Can save the parameters used to perform simulations, and the output files themselves. \hlyellow{Can run in batch mode}.
-\end{enumerate}
-An important piece of information that you probably should keep at the back of your head is that ``the backplane is at the bottom and the strips on the top edge with the readout strip being always centered".
-
-\subsection{WF2 - RSD}
-WF2-RSD (WF2 - Resistive Silicon Detectors) is a version of software that rolled-out after WF2. The primary objective of this version is to simulate AC-LGADs. In some parts of the code, I believe (and this is a personal opinion) that quantities being calculated are mimicing the experimental results and not truly simulating the physics. This is also partly because we still don't know what is happening in AC-LGADs, for example, the signal induction to the AC pads.
+WF2-RSD (WF2 - Resistive Silicon Detectors) is a version of software that rolled-out after WF2. The primary objective of this tool is to simulate RSDs (or also known as AC-LGADs). In some parts of the code, I believe (and this is a personal opinion) that quantities being calculated are mimicing the experimental results and not truly simulating the physics behind such processes. This might also partly be because we still don't know what is happening in AC-LGADs, for example, the signal induction to the AC pads.
 \newline
-One presentation that contains some details of WF2-RSD is \cite{wf2-rsd-working-principles}. The slides discuss the models used to calculate the charge sharing (among different pads) and signal delay.
+Two references that explain some working principles of WF2-RSD are \cite{wf2-rsd-working-principles} and \cite{Tornago2021}. The former discusses the models used to calculate the charge sharing (among different pads) and signal delay and the later is a more detailed article on the same.
 \newline
 WF2-RSD differs from WF2 in the following aspects:
 \begin{enumerate}
-    \item Resistive layer - capability to add a resistive layer with a user-defined resistivity.
-    \item Addition of circular pads (instead of strips) by default - User can change number of pads, and packing (square and hexagonal packing of the pads)
-    \item 
+    \item Resistive layer - capability to simulate a resistive layer with a user-defined resistivity.
+    \item Addition of circular pads (instead of strips) by default - User can change number of pads, and packing (square and hexagonal packing of the pads).
+    \item Naturally, the signal induction calculation has been updated, and the signal sharing model (Logarithmic attenuation model \cite{Tornago2021}) has been included.
 \end{enumerate}
-The description of the plots in the ``\textbf{Drift Potential}" section is as follows:
+
+\section{Input Panel Variables/Quantities}
+The WF2-RSD front-end has many parameters and sections for plots and an example of the same can be seen in Figure \ref{fig:3x3-pad-field}. This section walks the reader through what each section is for, along with a brief description of the quantities/results involved.
+\subsection{Panel: Detector properties}
+There are 3 detector types under the ``\textbf{Type}'' section (namely Silicon, diamond, and SiC). This refers to the type of material the detector is made of. Each option would involve different values for quanitities like dielectric constant, (e/h) mobilities, etc.
+\newline
+Since we are dealing with AC-LGADs, the next section ``\textbf{}'' would/should stay at n-type strips (referring to the n+ layer) and p-type bulk.
+\newline
+The options involved with the ``\textbf{Dimensions}" section and their description are as follows:
 \begin{enumerate}
-    \item XZ potential contour (top left) - Contour plot of electric potential across the XZ plane for a Y-plane. \hlyellow{Apparently, since we have uniform doping and a uniform active region, this plot should be same for all Y-values.}
-    \item Calculated amplitude plot (top right) for say, pad `A' and minimum charge amplitude = say `B' - Plot across the XY plane that signifies when a particle/radiation passes through a point in that XY-plane, how much of the amplitude reached pad `A'. Signal amplitude below `B' is not considered.
-    \item \% of signal seen (bottom left) - For the incident particle(s)/radiation incident at the given position (marked with a purple dot in plot), the percentage amount of the signal reaching nearby pads is represented in this plot. Do \textbf{note} that the percentage value is shown below the pad, and not above it. Sometimes two numbers are displayed outside the plot-area, just poor formatting.
-    \item Number of active pads (bottom right) - A plot on the XY-play, such that, for incoming particle(s)/radiation on a certain point in the plot, how many pads will pick up the signal (this number is given by the z-colour-axis).
-\end{enumerate}
-The options' description for the ``\textbf{Dimensions}" section:
-\begin{enumerate}
-    \item Stacked - Switching on this option takes you from rectangularly packed pads (default) to hexagonal packing of the pads.
-    \item Number of pads - Changes the number of pads: this number tells you how many pads will be simulated in both the X and Y directions uniformly.
+    \item Stacked - Switching-on this option will go from rectangularly packed pads (default) to hexagonal packing of the pads.
+    \item Number of pads - The number of pads that will be present in the sensor geometry. A screenshot of the simulation window/screen for 2 different pad numbers are shown in Figure \ref{fig:ss-number-of-pads}.
     \begin{figure*}[h!]
         \centering
         \begin{subfigure}[t]{0.99\textwidth}
@@ -95,24 +82,25 @@ The options' description for the ``\textbf{Dimensions}" section:
             \label{fig:5x5-pad-field}
         \end{subfigure}
         \caption{Software settings and results for (a) 3 $\times$ 3 and (b) 5 $\times$ 5 pad structures.}
+        \label{fig:ss-number-of-pads}
     \end{figure*}
-    \item Resistivity n+ layer - Probably means resistivity of the n+ layer, but there is cause for some confusion as there is no mention of a unit. Only reasonable mention of this value is on the last slide of \href{https://indico.cern.ch/event/928957/contributions/3913535/attachments/2069369/3473666/FCCee_Cartiglia.pdf}{this} presentation. \hlyellow{Check for changes in current for different resistivity values}.
-    \item Thickness - The thickness of the detector (if observed, there is no consideration of pad thickness - apparently because that does not affect the potential values under the pads, i.e. in the detector volume). My guess is that this thickness is the thickness of the bulk substrate (active volume - where the primary charges are created by an incident radiation). The top left plot under drift-potential plots looks to be the cross-sectional plot of the electric potential across the detector.
-    \item Metal - The width (=length) of the pads which are taken to be circular due to simplicity (\href{http://personalpages.to.infn.it/~cartigli/Weightfield2/WF2_RSD_files/CERN_Cartiglia_modified.pdf}{Reference} - slide 16).
-    \item Pitch - The pitch of the pads. Should be greater than width of-course.
+    \item Resistivity n+ layer - Refers to the resistivity of the n+ layer. \hlyellow{Check for changes in current for different resistivity values}. The sheet resistance is 1k$\Omega$/$\square$.
+    \item Thickness - The thickness of the detector (if one observes carefully, there is no consideration of pad thickness - which does not affect the potential values under the pads, i.e. in the detector volume). \hlyellow{The value that is assigned to this quantity is the thickness of the bulk substrate (active volume - where the primary charges are created by an incident radiation)}. The top left plot under drift-potential plots is the cross-sectional plot of the electric potential across the detector.
+    \item Metal - The diameter of the circular pads (\href{http://personalpages.to.infn.it/~cartigli/Weightfield2/WF2_RSD_files/CERN_Cartiglia_modified.pdf}{Reference} - slide 16).
+    \item Pitch - The pitch of the pad geometry. Should be greater than the metal diameter ofcourse.
 \end{enumerate}
-\newpage
 The options' description for the ``\textbf{Gain}" section:
 \begin{enumerate}
+    \item Material: Options include Boron, Boron+Carbon, Gallium, and Gallium+Carbon. The addition of Carbon is known to improve radiation hardness \cite{ferrero-radiation-hardness}.
     \item Gain layer - 
         \begin{itemize}
             \item Uniform corresponds to a uniform doping concentration. 
-            \item The numbers that follow after the setting/configuration is the position at from the electrode at which the gain layer will be implanted. 
-            \item LD corresponds to Low-Diffusion [sensors with a (say Boron) doped gain layer that were exposed to a reduced thermal load during production to minimize the diffusion of Boron (Boron low-diffusion)] \cite{ferrero-radiation-hardness}. See \href{https://indico.cern.ch/event/806731/contributions/3516709/attachments/1926118/3188326/191013-VERTEX-RD50-mmoll-acceptor-removal.pdf}{this} link for a better picture.
-            \item The number that precedes the configuration refer to the identification tag/name given to the sensor version (Eg - 3.1 refers to the HPK-3.1 sensors made by HPK) \cite{jadhav-sensor-variation, jin-sensor-variation}.
-            \item There is one option that contains `Epi' which refers to the Epitaxial substrate. \hlyellow{Although as the setting suggests that the depth of the layer is 3 $\mu$m, but the effective doping plot shows that the layer begins somewhere between 199 $\mu$m and 200 $\mu$m (a small offset is also present for other implant settings).}
+            \item The numbers that follow after the setting/configuration is the position of the electrode from which the gain layer will be implanted. 
+            \item LD corresponds to Low-Diffusion [sensors with, say a Boron gain layer that were exposed to a reduced thermal load during production to minimize the diffusion of Boron (Boron low-diffusion)] \cite{ferrero-radiation-hardness}. See \href{https://indico.cern.ch/event/806731/contributions/3516709/attachments/1926118/3188326/191013-VERTEX-RD50-mmoll-acceptor-removal.pdf}{this} link for a better picture.
+            \item The number that precedes the configuration refers to the identification tag/name given to the sensor version (Eg - 3.1 refers to the HPK-3.1 sensors made by HPK) \cite{jadhav-sensor-variation, jin-sensor-variation}.
+            \item There is one option with the word `Epi': it refers to an Epitaxial substrate. \hlyellow{Although as the setting suggests that the depth of the layer is 3 $\mu$m, but the effective doping plot shows that the layer begins somewhere between 199 $\mu$m and 200 $\mu$m (a small offset is also present for other implant settings).}
         \end{itemize}
-    \item Forced gain value - According to Cartiglia's website manual, one can forcefully set a gain value, which in-turn removes the dependance from the bias voltage. A hint along the same direction to what is happening with this step can be understood from \cite{ferrero-radiation-hardness} (Figure 10).
+    \item Forced gain value - According to Cartiglia's website manual, one can forcefully set a gain value, which in-turn removes the dependance from the bias voltage. A hint along the same direction to what is happening with this step can be understood from Figure 10 in\cite{ferrero-radiation-hardness}.
 \end{enumerate}
 \begin{table}[!h]
     \centering
@@ -143,6 +131,14 @@ More details on the same can be found in \cite{WF2-incident-particles-cenna}.
 \newline
 Edge-TCT measurements (shooting laser breams left-right) are used to measure the depletion depth for a certain voltage bias \cite{moll-acceptor-removal}.
 \newline
+The description of the plots in the ``\textbf{Drift Potential}" section is as follows:
+\begin{enumerate}
+    \item XZ potential contour (top left) - Contour plot of electric potential across the XZ plane for a Y-plane. \hlyellow{Apparently, since we have uniform doping and a uniform active region, this plot should be same for all Y-values.}
+    \item Calculated amplitude plot (top right) for say, pad `A' and minimum charge amplitude = say `B' - Plot across the XY plane that signifies when a particle/radiation passes through a point in that XY-plane, how much of the amplitude reached pad `A'. Signal amplitude below `B' is not considered.
+    \item \% of signal seen (bottom left) - For the incident particle(s)/radiation incident at the given position (marked with a purple dot in plot), the percentage amount of the signal reaching nearby pads is represented in this plot. Do \textbf{note} that the percentage value is shown below the pad, and not above it. Sometimes two numbers are displayed outside the plot-area, just poor formatting.
+    \item Number of active pads (bottom right) - A plot on the XY-play, such that, for incoming particle(s)/radiation on a certain point in the plot, how many pads will pick up the signal (this number is given by the z-colour-axis).
+\end{enumerate}
+\newpage
 \textbf{Electronics}
 Accounting for electronics effect:
 \begin{enumerate}
@@ -240,6 +236,7 @@ WF2\_5.4 has another update with regard to choosing AC/DC coupling on the top-re
 That said, WF2-RSD does not have the option to introduced AC-coupling in the readout, so can we not fully simulate AC-LGADs? According to one of Cartiglia's \href{https://indico.cern.ch/event/928957/contributions/3913535/attachments/2069369/3473666/FCCee_Cartiglia.pdf}{slides}, it seems like WF2-RSD is for AC coupled simulations by default.
 \newline
 I still have not deeply looked at the differences in WF2-RSD between version 5.15 and version 5.16.
+
 \bibliography{references}
 
 \end{document}
