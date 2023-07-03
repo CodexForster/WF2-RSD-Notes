@@ -1,8 +1,0 @@
-\contentsline {section}{\numberline {1}About}{2}{section.1}%
-\contentsline {section}{\numberline {2}Input Panel Variables/Quantities}{2}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Panel: Detector properties}{2}{subsection.2.1}%
-\contentsline {section}{\numberline {3}A full analysis + check of parameters}{6}{section.3}%
-\contentsline {subsection}{\numberline {3.1}n+ layer's resistivity}{6}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Thickness}{6}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Time delay from hit position}{6}{subsection.3.3}%
-\contentsline {subsection}{\numberline {3.4}Changes introduced in different versions}{8}{subsection.3.4}%
