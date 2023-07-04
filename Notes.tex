@@ -87,12 +87,12 @@ The options involved with the ``\textbf{Dimensions}" section and their descripti
     \item Resistivity n+ layer - Refers to the resistivity of the n+ layer. \hlyellow{Check for changes in current for different resistivity values}. The sheet resistance is 1k$\Omega$/$\square$.
     \item Thickness - The thickness of the detector (if one observes carefully, there is no consideration of pad thickness - which does not affect the potential values under the pads, i.e. in the detector volume). \hlyellow{The value that is assigned to this quantity is the thickness of the bulk substrate (active volume - where the primary charges are created by an incident radiation)}. The top left plot under drift-potential plots is the cross-sectional plot of the electric potential across the detector.
     \item Metal - The diameter of the circular pads (\href{http://personalpages.to.infn.it/~cartigli/Weightfield2/WF2_RSD_files/CERN_Cartiglia_modified.pdf}{Reference} - slide 16).
-    \item Pitch - The pitch of the pad geometry. Should be greater than the metal diameter ofcourse.
+    \item Pitch - The distance between 2 adjacent pads. Should be greater than the metal diameter ofcourse.
 \end{enumerate}
 The options' description for the ``\textbf{Gain}" section:
 \begin{enumerate}
-    \item Material: Options include Boron, Boron+Carbon, Gallium, and Gallium+Carbon. The addition of Carbon is known to improve radiation hardness \cite{ferrero-radiation-hardness}.
-    \item Gain layer - 
+    \item Dopant material - Options include Boron, Boron+Carbon, Gallium, and Gallium+Carbon. The addition of Carbon is known to improve radiation hardness \cite{ferrero-radiation-hardness}.
+    \item Gain layer uniformity+position: 
         \begin{itemize}
             \item Uniform corresponds to a uniform doping concentration. 
             \item The numbers that follow after the setting/configuration is the position of the electrode from which the gain layer will be implanted. 
@@ -101,6 +101,7 @@ The options' description for the ``\textbf{Gain}" section:
             \item There is one option with the word `Epi': it refers to an Epitaxial substrate. \hlyellow{Although as the setting suggests that the depth of the layer is 3 $\mu$m, but the effective doping plot shows that the layer begins somewhere between 199 $\mu$m and 200 $\mu$m (a small offset is also present for other implant settings).}
         \end{itemize}
     \item Forced gain value - According to Cartiglia's website manual, one can forcefully set a gain value, which in-turn removes the dependance from the bias voltage. A hint along the same direction to what is happening with this step can be understood from Figure 10 in\cite{ferrero-radiation-hardness}.
+    \item Impact-ionization models - Simulation of the gain mechanism through various models. The user has a choice between 4 models, namely, van Overstraeten model, Okuto-Crowell model, Bologna model, and Massey-LGAD model. Table \ref{tab:impact-ionization-models} summarises some differences between these 4 models.
 \end{enumerate}
 \begin{table}[!h]
     \centering
@@ -115,8 +116,25 @@ The options' description for the ``\textbf{Gain}" section:
     \label{tab:hpk-sensor-parameters}
 \end{table}
 \cite{arcidiacono-irradiation} found that the gain layer produced in Low Diffusion (LD-narrower layer profile) is more radiation resistant than the High Diffusion (HD) type; (ii) the co-implantation of carbon in the gain layer volume improves by a factor of $\approx$2 the radiation resistance. \cite{ferrero-radiation-hardness} additionally found that Gallium doping is less radiation resistant than Boron doping, and that narrower gain layer implants are more radiation resistant than wider implants.
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+\begin{table}[]
+    \centering
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    Model            & Year Introduced & Electric Field Range (x10$^5$   Vcm$^{-1}$) & Temperature Range (K) \\ \hline
+    Van Overstraeten & 1970            & 1.75 - 6.4                          & NIL                   \\ \hline
+    Okuto-Crowell    & 1975            & 1.0 - 10.0                          & Around 300            \\ \hline
+    Massey           & 2006            & 2.0 - 8.0                           & 14 - 420              \\ \hline
+    Bologna          & 1999            & 0.5 - 6.0                           & 300 - 700             \\ \hline
+    \end{tabular}%
+    }
+    \caption{}
+    \label{tab:impact-ionization-models}
+\end{table}
 
-Since LGADs have an additional p+ gain layer below the n+ layer when compared with typical silicon detectors, this section contains the options to add this additional layer, define the dopant material, uniformity of doping, choice of physics model for the gain, etc. A brief description of the settings can be found on Cartiglia's \href{http://personalpages.to.infn.it/~cartigli/Weightfield2/Manual_2.html}{WF2 RSD page}.
+A brief description of the settings can be found on Cartiglia's \href{http://personalpages.to.infn.it/~cartigli/Weightfield2/Manual_2.html}{WF2 RSD page}.
 \newline
 The option description for the ``\textbf{Select Particles}" section will follow, but the description has been organised according to the particle type, as each particle type have a different set of options that can be configured. The user has an option to choose from MIPs, X-Rays, Lasers, and a current pulse.
 \begin{enumerate}
