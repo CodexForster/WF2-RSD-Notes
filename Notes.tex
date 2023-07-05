@@ -1,6 +1,7 @@
 \documentclass[11pt]{article}
 
 \usepackage{graphicx}
+\usepackage{multirow}
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage[left = 2cm, right = 2cm, top = 2cm, bottom = 2cm]{geometry}
@@ -101,7 +102,7 @@ The options' description for the ``\textbf{Gain}" section:
             \item There is one option with the word `Epi': it refers to an Epitaxial substrate. \hlyellow{Although as the setting suggests that the depth of the layer is 3 $\mu$m, but the effective doping plot shows that the layer begins somewhere between 199 $\mu$m and 200 $\mu$m (a small offset is also present for other implant settings).}
         \end{itemize}
     \item Forced gain value - According to Cartiglia's website manual, one can forcefully set a gain value, which in-turn removes the dependance from the bias voltage. A hint along the same direction to what is happening with this step can be understood from Figure 10 in\cite{ferrero-radiation-hardness}.
-    \item Impact-ionization models - Simulation of the gain mechanism through various models. The user has a choice between 4 models, namely, van Overstraeten model, Okuto-Crowell model, Bologna model, and Massey-LGAD model. Table \ref{tab:impact-ionization-models} summarises some differences between these 4 models.
+    \item Impact-ionization models - Simulation of the gain mechanism through various models. The user has a choice between 4 models, namely, Van Overstraeten model, Okuto-Crowell model, Bologna model, and Massey-LGAD model. Table \ref{tab:impact-ionization-models} summarises some differences between these 4 models. It seems like 
 \end{enumerate}
 \begin{table}[!h]
     \centering
@@ -115,50 +116,25 @@ The options' description for the ``\textbf{Gain}" section:
     \caption{Comparison of some parameters of 3 types of sensors used in WF2-RSD simulations. The numbers in paranthesis in the Implant level column are ones used in WF2-RSD.}
     \label{tab:hpk-sensor-parameters}
 \end{table}
-\cite{arcidiacono-irradiation} found that the gain layer produced in Low Diffusion (LD-narrower layer profile) is more radiation resistant than the High Diffusion (HD) type; (ii) the co-implantation of carbon in the gain layer volume improves by a factor of $\approx$2 the radiation resistance. \cite{ferrero-radiation-hardness} additionally found that Gallium doping is less radiation resistant than Boron doping, and that narrower gain layer implants are more radiation resistant than wider implants.
-% Please add the following required packages to your document preamble:
-% \usepackage{graphicx}
-\begin{table}[]
+\begin{table}[h]
     \centering
-    \resizebox{\textwidth}{!}{%
-    \begin{tabular}{|c|c|c|c|}
+    \resizebox{5in}{!}{%
+    \begin{tabular}{|c|c|cc|}
     \hline
-    Model            & Year Introduced & Electric Field Range (x10$^5$   Vcm$^{-1}$) & Temperature Range (K) \\ \hline
-    Van Overstraeten & 1970            & 1.75 - 6.4                          & NIL                   \\ \hline
-    Okuto-Crowell    & 1975            & 1.0 - 10.0                          & Around 300            \\ \hline
-    Massey           & 2006            & 2.0 - 8.0                           & 14 - 420              \\ \hline
-    Bologna          & 1999            & 0.5 - 6.0                           & 300 - 700             \\ \hline
+    \multirow{2}{*}{Model} & \multirow{2}{*}{Year Introduced} & \multicolumn{2}{c|}{Valid over:}                                                 \\ \cline{3-4} 
+                           &                                  & \multicolumn{1}{c|}{Electric field (x10$^5$   Vcm$^{-1}$)} & Temperature (K) \\ \hline
+    Van Overstraeten & 1970 & \multicolumn{1}{c|}{1.75 - 6.4} & NIL        \\ \hline
+    Okuto-Crowell    & 1975 & \multicolumn{1}{c|}{1.0 - 10.0} & Around 300 \\ \hline
+    Massey           & 2006 & \multicolumn{1}{c|}{2.0 - 8.0}  & 14 - 420   \\ \hline
+    Bologna          & 1999 & \multicolumn{1}{c|}{0.5 - 6.0}  & 300 - 700  \\ \hline
     \end{tabular}%
     }
-    \caption{}
+    \caption{Some differences between the impact-ionization models that can be used in WF2-RSD.}
     \label{tab:impact-ionization-models}
 \end{table}
+\cite{arcidiacono-irradiation} found that the gain layer produced in Low Diffusion (LD-narrower layer profile) is more radiation resistant than the High Diffusion (HD) type; (ii) the co-implantation of carbon in the gain layer volume improves by a factor of $\approx$2 the radiation resistance. \cite{ferrero-radiation-hardness} additionally found that Gallium doping is less radiation resistant than Boron doping, and that narrower gain layer implants are more radiation resistant than wider implants.
 
-A brief description of the settings can be found on Cartiglia's \href{http://personalpages.to.infn.it/~cartigli/Weightfield2/Manual_2.html}{WF2 RSD page}.
-\newline
-The option description for the ``\textbf{Select Particles}" section will follow, but the description has been organised according to the particle type, as each particle type have a different set of options that can be configured. The user has an option to choose from MIPs, X-Rays, Lasers, and a current pulse.
-\begin{enumerate}
-    \item MIPs - User can define the position at which the MIPs enter, and the number of MIPs. The user can select the type of energy deposition:
-    \begin{itemize}
-        \item Uniform/Non-uniform energy deposition - User has the option of changing the number of electron-hole pairs deposited per $\mu$m.
-        \item Landau - An energy deposition according to the Landau distribution. One can also have a MIP passing through the detector from left to right (Edge MIP Landau), instead the default top to bottom.
-    \end{itemize}
-    \item Laser - Options can let the user decide if the laser has to enter the detector from top-down, or down-top, or left-right (Edge)
-\end{enumerate}
-More details on the same can be found in \cite{WF2-incident-particles-cenna}.
-\newline
-Edge-TCT measurements (shooting laser breams left-right) are used to measure the depletion depth for a certain voltage bias \cite{moll-acceptor-removal}.
-\newline
-The description of the plots in the ``\textbf{Drift Potential}" section is as follows:
-\begin{enumerate}
-    \item XZ potential contour (top left) - Contour plot of electric potential across the XZ plane for a Y-plane. \hlyellow{Apparently, since we have uniform doping and a uniform active region, this plot should be same for all Y-values.}
-    \item Calculated amplitude plot (top right) for say, pad `A' and minimum charge amplitude = say `B' - Plot across the XY plane that signifies when a particle/radiation passes through a point in that XY-plane, how much of the amplitude reached pad `A'. Signal amplitude below `B' is not considered.
-    \item \% of signal seen (bottom left) - For the incident particle(s)/radiation incident at the given position (marked with a purple dot in plot), the percentage amount of the signal reaching nearby pads is represented in this plot. Do \textbf{note} that the percentage value is shown below the pad, and not above it. Sometimes two numbers are displayed outside the plot-area, just poor formatting.
-    \item Number of active pads (bottom right) - A plot on the XY-play, such that, for incoming particle(s)/radiation on a certain point in the plot, how many pads will pick up the signal (this number is given by the z-colour-axis).
-\end{enumerate}
-\newpage
-\textbf{Electronics}
-Accounting for electronics effect:
+\subsection{Panel: Electronics}
 \begin{enumerate}
     \item Detector capacitance
     \item Oscilloscope bandwidth
@@ -175,13 +151,39 @@ Accounting for electronics effect:
         \item Noise and threshold voltage
     \end{itemize}
 \end{enumerate}
-Changing parameters of the Charge Sensitive Amplifier (CSA), changes the (Broad-Band) BB amplifier output. This probably suggests that we are looking at a readout `chain' (sensor $\rightarrow$ CSA $\rightarrow$ TI) and not two independent amplifier outputs.
+Changing parameters of the Charge Sensitive Amplifier (CSA), changes the (Broad-Band) BB amplifier output. This probably suggests that we are looking at a readout `chain' (sensor $\rightarrow$ CSA $\rightarrow$ TI) and not two independent amplifier outputs. \hlyellow{Although this is not evident when looking at the code for how these two quantities are calculated.}
 \newline
-First, some CAS and TI amplifier parameters were investigated: the noise and threshold voltages (of both CSA and TI) were varied to study what changes they introduce in the final output. A noise voltage of 0.001, 0.1, 1.5, 10, and 50 mV (while other parameters were kept constant) did not show any visible changes in the outputs. The same was done for threshold voltage for 0.001, 0.1, 1, 10, and 50 mV (while other parameters were kept constant) and no visible changes were seen in the output.
+First, some CAS and TI amplifier parameters were investigated: the noise and threshold voltages (of both CSA and TI) were varied to study what changes they introduce in the final output. A noise voltage of 0.001, 0.1, 1.5, 10, and 50 mV (while other parameters were kept constant) did not show any visible changes in the outputs. The same was done for threshold voltage for 0.001, 0.1, 1, 10, and 50 mV (while other parameters were kept constant) and no visible changes were seen in the output. \hlyellow{Understanding how noises are calculated and inculcated into the final output is yet to be done.}
 
-subsection{Parameters.dat file}
+\subsection{Panel: Select Particles}
+This subsection has been organised according to the particle type, as each particle type have a different set of options that can be configured. The user has an option to choose from Minimum Ionizing Particles (MIPs), X-Rays, Lasers, and a current pulse.
+\begin{enumerate}
+    \item MIPs - User can define the incident position of the MIPs and the number of MIPs. The user can select the type of energy deposition:
+    \begin{itemize}
+        \item Uniform/Non-uniform energy deposition - fixes the number of electron-hole pairs deposited per $\mu$m.
+        \item Landau - An energy deposition that follows a Landau distribution. One can also have a MIP passing through the detector from left to right (Edge MIP Landau), instead the default top to bottom.
+    \end{itemize}
+    \item Laser - Options can let the user decide if the laser has to enter the detector from top-down, or down-top, or left-right (Edge)
+\end{enumerate}
+More details on the same can be found in \cite{WF2-incident-particles-cenna}.
+\newline
+Edge-TCT measurements (shooting laser beams left-right) are used to measure the depletion depth for a certain voltage bias \cite{moll-acceptor-removal}.
 
-\section{A full analysis + check of parameters}
+\subsection{Panel: Batch mode and output files}
+Running the simulation on a batch mode essentially repeats one run of the simulation many times. One aspect of the results that is different is the plot from the electronics: a single run will show the waveforms of the CSA and the TI, whereas a batch mode run will produce histograms on resolutions that is yet to be understood.
+\newline
+WF2-RSD provides an option to save the output files, the contents of which were not fully sufficient to produce the figures in Section \ref{sec:full-analysis}. Thus, the source code was modified to store/save the results in a relevant format.
+
+\subsection{Panel: Plots}
+A brief outline of the plots made in the ``\textbf{Drift Potential}" section is as follows:
+\begin{enumerate}
+    \item XZ potential contour (top left) - Contour plot of electric potential across the XZ plane for a Y-plane. \hlyellow{Apparently, since we have uniform doping and a uniform active region, this plot should be same for all Y-values.}
+    \item Calculated amplitude plot (top right) for say, pad `A' and minimum charge amplitude = say `B' - Plot across the XY plane that signifies when a particle/radiation passes through a point in that XY-plane, how much of the amplitude reached pad `A'. Signal amplitude below `B' is not considered.
+    \item \% of signal seen (bottom left) - For the incident particle(s)/radiation incident at the given position (marked with a purple dot in plot), the percentage amount of the signal reaching nearby pads is represented in this plot. Do \textbf{note} that the percentage value is shown below the pad, and not above it. Sometimes two numbers are displayed outside the plot-area, just poor formatting.
+    \item Number of active pads (bottom right) - A plot on the XY-play, such that, for incoming particle(s)/radiation on a certain point in the plot, how many pads will pick up the signal (this number is given by the z-colour-axis).
+\end{enumerate}
+
+\section{A full analysis + check of parameters}\label{sec:full-analysis}
 \subsection{n+ layer's resistivity}
 We look at the effect of resistivity of the n+ layer on the signal characteristic and gain (because \cite{giacomini-lgad} states that doing so changes how much the n+ layer gets depleted).
 
