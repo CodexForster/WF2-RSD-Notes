@@ -21,7 +21,7 @@
 
 \bibliographystyle{unsrt}%abbrv} % We choose the "plain" reference style
 
-\title{Tips/Tricks and Notes to Simulation Tools}
+\title{Notes on Weightfield2 - Resistive Silicon Detectors}
 \author{Danush Shekar}
 \date{\today}
 
@@ -32,15 +32,15 @@
 
 \newpage
 
-\abstract{This is my attempt in saving an account of all tips/tricks, notes, and discussions of the simulation tools I have used (mostly related to HEP simulations). In theory, this is also a note to questions and answers I encountered while I studied the subject, and that this notebook should serve as a reference for the doubts my mind stumbles upon in the future.}
+\abstract{}%This is my attempt in saving an account of all tips/tricks, notes, and discussions of the simulation tools I have used (mostly related to HEP simulations). In theory, this is also a note to questions and answers I encountered while I studied the subject, and that this notebook should serve as a reference for the doubts my mind stumbles upon in the future.}
 
 \subsection*{Colour legend}
-This note will follow a highlighting scheme where text highlighted in different colors mean the following:
+This document will follow a highlighting scheme where text highlighted in different colors mean the following:
 \newline
-\hlyellow{Yellow coloured text} - Doubts, or sentences that are to be clarified/understood later.\\
-\hlgreen{Green coloured text} - Some takeaways.\\
-%\hlred{Red coloured text} - Mistakes/typos.\\
-\hlpurple{Purple coloured text} - Interesting and unique points, that often are not mentioned explicitly in textbooks/literature.\\
+\hlyellow{Yellow coloured text} - Doubts, or sentences that are to be clarified/understood later.\newline
+\hlgreen{Green coloured text} - Some takeaways.\newline
+%\hlred{Red coloured text} - Mistakes/typos.\newline
+\hlpurple{Purple coloured text} - Interesting and unique points, that often are not mentioned explicitly in textbooks/literature.
 
 \section{About}
 The WeightField\footnote{The manual for this (first) version can be found at \href{http://personalpages.to.infn.it/~cartigli/Weightfield2/Manual_files/Manual_Weightfield.pdf}{here}} (WF) software is a tool used to simulate a variety of silicon detectors: different versions have been updated over time to study a variety of silicon sensors. As the name suggest, the WeightField2\footnote{Main link to manuals/guides - \href{http://personalpages.to.infn.it/~cartigli/Weightfield2/Manual.html}{http://personalpages.to.infn.it/~cartigli/Weightfield2/Manual.html}.} (WF2) software is the second iteration of WF. The weighting potential is calculated by solving for the Laplace equation using numerical methods (which also involves interpolation), and the induced current is calculated using the Shockley-Ramo theorem. An important piece of information that you probably should keep at the back of your head is that ``the backplane is at the bottom and the strips on the top edge with the readout strip being always centered".
@@ -57,7 +57,7 @@ WF2-RSD differs from WF2 in the following aspects:
 \end{enumerate}
 
 \section{Input Panel Variables/Quantities}
-The WF2-RSD front-end has many parameters and sections for plots and an example of the same can be seen in Figure \ref{fig:3x3-pad-field}. This section walks the reader through what each section is for, along with a brief description of the quantities/results involved.
+The WF2-RSD front-end has many parameters and sections for plots and an example of the same can be seen in Figure \ref{fig:3x3_pad_field}. This section walks the reader through what each section is for, along with a brief description of the quantities/results involved.
 \subsection{Panel: Detector properties}
 There are 3 detector types under the ``\textbf{Type}'' section (namely Silicon, diamond, and SiC). This refers to the type of material the detector is made of. Each option would involve different values for quanitities like dielectric constant, (e/h) mobilities, etc.
 \newline
@@ -66,24 +66,24 @@ Since we are dealing with AC-LGADs, the next section ``\textbf{}'' would/should 
 The options involved with the ``\textbf{Dimensions}" section and their description are as follows:
 \begin{enumerate}
     \item Stacked - Switching-on this option will go from rectangularly packed pads (default) to hexagonal packing of the pads.
-    \item Number of pads - The number of pads that will be present in the sensor geometry. A screenshot of the simulation window/screen for 2 different pad numbers are shown in Figure \ref{fig:ss-number-of-pads}.
+    \item Number of pads - The number of pads that will be present in the sensor geometry. A screenshot of the simulation window/screen for 2 different pad numbers are shown in Figure \ref{fig:ss_number_of_pads}.
     \begin{figure*}[h!]
         \centering
         \begin{subfigure}[t]{0.99\textwidth}
             \centering
             \includegraphics[width=5in]{Images/3x3_pad_structure.png}
             \caption{}
-            \label{fig:3x3-pad-field}
+            \label{fig:3x3_pad_field}
         \end{subfigure}%
 
         \begin{subfigure}[t]{0.99\textwidth}
             \centering
             \includegraphics[width=5in]{Images/5x5_pad_structure.png}
             \caption{}
-            \label{fig:5x5-pad-field}
+            \label{fig:5x5_pad_field}
         \end{subfigure}
         \caption{Software settings and results for (a) 3 $\times$ 3 and (b) 5 $\times$ 5 pad structures.}
-        \label{fig:ss-number-of-pads}
+        \label{fig:ss_number_of_pads}
     \end{figure*}
     \item Resistivity n+ layer - Refers to the resistivity of the n+ layer. \hlyellow{Check for changes in current for different resistivity values}. The sheet resistance is 1k$\Omega$/$\square$.
     \item Thickness - The thickness of the detector (if one observes carefully, there is no consideration of pad thickness - which does not affect the potential values under the pads, i.e. in the detector volume). \hlyellow{The value that is assigned to this quantity is the thickness of the bulk substrate (active volume - where the primary charges are created by an incident radiation)}. The top left plot under drift-potential plots is the cross-sectional plot of the electric potential across the detector.
@@ -172,22 +172,25 @@ Edge-TCT measurements (shooting laser beams left-right) are used to measure the 
 \subsection{Panel: Batch mode and output files}
 Running the simulation on a batch mode essentially repeats one run of the simulation many times. One aspect of the results that is different is the plot from the electronics: a single run will show the waveforms of the CSA and the TI, whereas a batch mode run will produce histograms on resolutions that is yet to be understood.
 \newline
-WF2-RSD provides an option to save the output files, the contents of which were not fully sufficient to produce the figures in Section \ref{sec:full-analysis}. Thus, the source code was modified to store/save the results in a relevant format.
+WF2-RSD provides an option to save the output files, the contents of which were not fully sufficient to produce the figures in Section \ref{sec:full_analysis}. Thus, the source code was modified to store/save the results in a relevant format.
 
 \subsection{Panel: Plots}
 A brief outline of the plots made in the ``\textbf{Drift Potential}" section is as follows:
 \begin{enumerate}
-    \item XZ potential contour (top left) - Contour plot of electric potential across the XZ plane for a Y-plane. \hlyellow{Apparently, since we have uniform doping and a uniform active region, this plot should be same for all Y-values.}
+    \item XZ potential contour (top left) - Contour plot of electric potential across the XZ plane for a Y-plane. Apparently, since we have uniform doping and a uniform active region, this plot should be similar for all Y-values.
     \item Calculated amplitude plot (top right) for say, pad `A' and minimum charge amplitude = say `B' - Plot across the XY plane that signifies when a particle/radiation passes through a point in that XY-plane, how much of the amplitude reached pad `A'. Signal amplitude below `B' is not considered.
     \item \% of signal seen (bottom left) - For the incident particle(s)/radiation incident at the given position (marked with a purple dot in plot), the percentage amount of the signal reaching nearby pads is represented in this plot. Do \textbf{note} that the percentage value is shown below the pad, and not above it. Sometimes two numbers are displayed outside the plot-area, just poor formatting.
     \item Number of active pads (bottom right) - A plot on the XY-play, such that, for incoming particle(s)/radiation on a certain point in the plot, how many pads will pick up the signal (this number is given by the z-colour-axis).
 \end{enumerate}
 
-\section{A full analysis + check of parameters}\label{sec:full-analysis}
-\subsection{n+ layer's resistivity}
-We look at the effect of resistivity of the n+ layer on the signal characteristic and gain (because \cite{giacomini-lgad} states that doing so changes how much the n+ layer gets depleted).
+\section{Brief review of the source code}
 
-A conclusive statement on the effect of resistivity on the gain value cannot be made using WF2-RSD, atleast not for the values of resistivity that was used for the study. However, increasing the resistivity showed an elongation of the tail of the second lobe of the signal. This can be explained by the fact that the integral of the signal is 0 (charging and discharging), and the RC value changes for different resistivities.
+\section{Reductionist studies of input parameters}\label{sec:full_analysis}
+WF2-RSD utilises numerous user-defined parameters that have a broad range of effects on the final results. The following sub-sections will describe the (reductionist) study performed on some of these parameters and the results obtained thereafter. By default, the word 'signal' would be used to refer to the AC pad signal in the following sub-sections.
+\subsection{n+ layer's resistivity}
+The dependance of the signal characteristic and gain on the resistivity of the n+ layer was studied, and specifically, if there were any changes to the depletion of the n+ layer (\cite{giacomini-lgad} states that doing so changes how much the n+ layer gets depleted).
+\newline
+Increasing the resistivity corresponded to the broadening of the signal's tail on the second lobe. Relevant figures for the same can be seen in Figure \ref{fig:n_resistivity}. The integral of the AC pad signal is 0 (involves a charging and discharging cycle \cite{Tornago2021}), and the RC value changes for different resistivities, which imply that a change in resistivity value will correspond to a change in the signal shape. A conclusive statement for the effect of resistivity on the gain value could not be made using WF2-RSD, atleast not for the values of resistivity that was used for the study.
 
 \begin{figure*}[h!]
     \centering
@@ -204,12 +207,13 @@ A conclusive statement on the effect of resistivity on the gain value cannot be 
         \label{fig:n_resistivity_plot}
     \end{subfigure}
     \caption{(a) An image of the settings used for the study and (b) the plot of the compiled results obtained as part of this study. As seen, four different values of n+ resistivity was used: 0.001, 0.1, 0.5, and 1.}
+    \label{fig:n_resistivity}
 \end{figure*}
 
-\hlyellow{The WF2-RSD tool produced a non-intuitive result for resistivity value = 0.0001. The positive part of the signal was much larger than those of the other resistivity values.}
+\hlyellow{The WF2-RSD tool produced a non-intuitive result for resistivity value = 0.0001. The positive lobe of the signal had a much larger amplitude than those of the other resistivity values.}
 
 \subsection{Thickness}
-Amongst the early silicon sensors (that had no gain layer), the thickness did not affect the amplitude of the signal because of two factors: the number of initial charges produced is proportional to the thickness, and the weighting field is inversely proportional to the thickness. In AC-LGADs however, things are not so simple. It was observed that increasing thickness broadens the tail of the first lobe as expected, because the positive charges need to travel a larger distance. \hlyellow{A non-intuitive observation is that the amplitude/height of the first lobe is inversely proportional to the thickness.}
+Amongst the early silicon sensors (that had no gain layer), the thickness did not affect the amplitude of the signal because of two factors: the number of initial charges produced is proportional to the thickness, and the weighting field is inversely proportional to the thickness. In AC-LGADs however, things are not so simple. It was observed that increasing thickness broadens the tail of the first lobe as expected, because the positive charges need to travel a larger distance. A non-intuitive observation is that the amplitude/height of the first lobe is inversely proportional to the thickness. That said, the first lobe of the signal broadens for thicker detectors which intuitively makes sense as the holes generated in the active volume will need longer time to traverse a larger distance.
 
 \begin{figure*}[h!]
     \centering
@@ -228,10 +232,17 @@ Amongst the early silicon sensors (that had no gain layer), the thickness did no
     \caption{(a) An image of the settings used for the study and (b) the plot of the compiled results obtained as part of this study. As seen, four different values of thicknesses was used: 50, 100, 135, 145, 150, and 200 $\mu$m.}
 \end{figure*}
 
-The reason for looking at 135 $\mu$m and 145 $\mu$m is that alongwith thickness, there was a parallel study on the maximum electric field's variation with thickness. There seems to be a numerical fluctuation (probably due to mesh-effects) of the maximum field value around 150 $\mu$m.
+This study was done for thicknesses in steps of 50 $\mu$m, but the reason for looking at 135 $\mu$m and 145 $\mu$m is that alongwith thickness, there was a parallel study on the maximum electric field's variation with thickness. A numerical fluctuation-like effect (probably due to mesh-effects) was observed for the maximum field value around thickness = 150 $\mu$m. The corresponding plot is shown below in Figure \ref{fig:maxEF_vs_thickness}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=3in]{Images/maxEF_vs_thickness.png}
+    \caption{A plot of maximum electric field observed in the sensor for different thicknesses.}
+    \label{fig:maxEF_vs_thickness}
+\end{figure}
 
 \subsection{Time delay from hit position}
-Depending on where the incident particle hits the sensor, there is a time delay introduced for the signal to reach the electronics. This comes from the time charges takes to reach the electrode, or more specifically, the wirebond. In the centimeter-scale AC-LGAD paper \cite{madrid2023}, it was reported that for different hit positions on the strip the time delay increases as one goes away from the wirebond. Simulations were done for pad diameters (200, 300, 400, and 450 $\mu$m) and varying y-coordinates (100, 150, 200, 250, and 600 $\mu$m) for the same x-coordinate (20$\mu$m away from the end of the pad). Although the terminal prints a number of the delay, this is calculated by the LogA model for signal sharing and the objective of this study was to see if the physics simulation would introduce some time delays in waveforms for different AC pads. In WF2, the current and electronic response of a sensor was simulated for different hit positions (in the gap region) and no conclusive correlation between the time when the current hits 0A, and distance from the center of the pads, was found. This statement could atleast be made only for the geometries that was tried. This could be because the strips that displayed this result in the above stated paper were of larger order of lengths, so this effect might not be prominent in smaller pad sizes.
+Depending on where the incident particle hits the sensor, the signal takes a finite non-zero time taken to reach the electronics. This arises due to the time needed by the charges to reach the electrode, or more specifically, the wirebond. In a centimeter-scale AC-LGAD paper \cite{madrid2023}, it was reported that for farther hit positions on the strip from the wirebond, the time delay increases. Simulations were done for pad diameters (200, 300, 400, and 450 $\mu$m) and varying y-coordinates (100, 150, 200, 250, and 600 $\mu$m) for the same x-coordinate (20$\mu$m away from the end of the pad). Although the terminal prints a number for the delay, this is calculated by the LogA model for signal sharing and the objective of this study was to observe the physics simulation to naturally introduce time delays in waveforms for different AC pads. In WF2-RSD, the current and electronic response of a sensor was simulated for different hit positions (in the gap region). A conclusive correlation between this time-delay and distance from the center of the pads to the incident position, was not found. This statement could atleast be made only for the geometries that was tried. It could be the case that the strips displaying this behavior in the above stated paper were of larger order of lengths, hence this effect might not be prominent in smaller pad sizes.
 
 \begin{figure*}[h!]
     \centering
@@ -250,7 +261,61 @@ Depending on where the incident particle hits the sensor, there is a time delay 
     \caption{A plot of the signals from a sensor with 50 um thickness, 500 um pitch, 200 um pad width for different incident hit positions (same x-coordinate, but different y-coordinates) in the gap region. The red box in Figure (a) corresponds to the region enlarged to produce Figure (b)).}
 \end{figure*}
 
-\subsection{Changes introduced in different versions}
+\subsection{Coupling capacitance: pad size}
+There are two ways to vary coupling capacitance: varying the diameter of the pads (on the front panel (GUI) of the software) and by varying the oxide layer thickness. Changing geometry is known to introduce other effects like inter-strip capacitance so the former method wouldn't be a proper reductionist study. The details of the second way to vary coupling capacitance (by varying the thickness of the oxide layer) will be discussed in Section \ref{sec:varying-ccp-code}. The results of this study are shown in Figure \ref{fig:varying_pad_size}. We see that smaller pads offer a path of greater impedance so more current reached the DC terminal than the AC pads.
+
+\begin{figure*}[h!]
+    \centering
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=3in]{Images/pad_size_other_settings.png}
+        \caption{}
+        \label{fig:pad_size_other_settings}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=3in]{Images/pad_size_plot.png}
+        \caption{}
+        \label{fig:pad_size_plot}
+    \end{subfigure}
+    \caption{(a) An image of the settings used for the study and (b) the plot of the compiled results obtained as part of this study. As seen, four different values of pad diameters was used: 50, 100, 150, and 200 $\mu$m.}
+    \label{fig:varying_pad_size}
+\end{figure*}
+
+\subsubsection{Attempt to reproduce experimental results}
+An article \cite{kita2023} reported results on the dependence of signal amplitude for different capacitances for pixel-electrode AC-LGADs. The respective plot is shown in Figure \ref{fig:kita_amp_vs_ccp}. A sensor of pitch 150 $\mu$m and square pad of width 140 $\mu$m was used. 
+
+\begin{figure*}[h!]
+    \centering
+    \includegraphics[width=3in]{Images/kita_amp_vs_ccp.png}
+    \caption{The signal size evaluated using $^{90}$Sr as a function of C$_{cp}$. Each colored point corresponds to fixed sheet resistance value.}
+    \label{fig:kita_amp_vs_ccp}
+\end{figure*}
+
+Using similar parameter values, an attempt was made to recreate the same plot using WF2-RSD. The only unknown was the doping concentration of the gain layer, which was not mentioned in the paper, thus this value was set to a typical number. The settings used and the results thus obtained is shown in Figure \ref{fig:recreate_kita_amp_vs_ccp}. It is worth mentioning that for this study, 100 events were simulated in the batch mode, and each event had one MIP traversing through the detector depositing charge according to a Landau distribution.
+
+\begin{figure*}[h!]
+    \centering
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=3in]{Images/recreate_kita_amp_vs_ccp_other_settings.png}
+        \caption{}
+        \label{fig:recreate_kita_amp_vs_ccp_other_settings}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=3in]{Images/recreate_kita_amp_vs_ccp_plot.png}
+        \caption{}
+        \label{fig:recreate_kita_amp_vs_ccp_plot}
+    \end{subfigure}
+    \caption{(a) An image of the settings used for the study and (b) the plot of the compiled results obtained as part of this study. The X-axis (rsdc1) is the variable in the source code that corresponds to the capacitance/area. \hlyellow{Example: an rsdc1 value of 0.0002 = 200pF/mm$^2$.} The two colored curves correspond to two different sheet resistances (0.4$\equiv$400$\Omega/\square$ and 1.6$\equiv$1600$\Omega/\square$).}
+    \label{fig:recreate_kita_amp_vs_ccp}
+\end{figure*}
+
+\subsection{Coupling capacitance: capacitance/area of oxide layer}\label{sec:varying-ccp-code}
+As mentioned earlier, a way to change the coupling capacitance without changing the electrode geometry is by varying the oxide layer thickness, which translates to changing the capacitance/area value of the oxide layer in the source code.
+
+\subsection{Updates in different versions}
 WF2\_5.4 has another update with regard to choosing AC/DC coupling on the top-readout surface, a feature that WF2\_5.17 does not have. Additionally, some other physics models for the gain layer (which is called as ``gain parameterisation'' in Cartiglia's website) seem to have been added.
 \newline
 That said, WF2-RSD does not have the option to introduced AC-coupling in the readout, so can we not fully simulate AC-LGADs? According to one of Cartiglia's \href{https://indico.cern.ch/event/928957/contributions/3913535/attachments/2069369/3473666/FCCee_Cartiglia.pdf}{slides}, it seems like WF2-RSD is for AC coupled simulations by default.
