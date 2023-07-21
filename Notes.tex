@@ -11,6 +11,14 @@
 \usepackage{soul}
 \usepackage{subcaption}
 \usepackage{verbatim}
+\usepackage{listings}
+
+\lstset{basicstyle=\ttfamily,
+columns=fullflexible,
+frame=single,
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+language=C++}
 
 \definecolor{red2}{RGB}{255, 49, 49}
 \definecolor{green2}{RGB}{144, 238, 144}
@@ -23,7 +31,7 @@
 \bibliographystyle{unsrt}%abbrv} % We choose the "plain" reference style
 
 \title{Notes on Weightfield2 - Resistive Silicon Detectors}
-\author{Danush Shekar}
+\author{Danush Shekar\\ Supervised by Dr. Zhenyu Ye}
 \date{\today}
 
 \begin{document}
@@ -33,7 +41,7 @@
 
 \newpage
 
-\abstract{}%This is my attempt in saving an account of all tips/tricks, notes, and discussions of the simulation tools I have used (mostly related to HEP simulations). In theory, this is also a note to questions and answers I encountered while I studied the subject, and that this notebook should serve as a reference for the doubts my mind stumbles upon in the future.}
+%\abstract{}%This is my attempt in saving an account of all tips/tricks, notes, and discussions of the simulation tools I have used (mostly related to HEP simulations). In theory, this is also a note to questions and answers I encountered while I studied the subject, and that this notebook should serve as a reference for the doubts my mind stumbles upon in the future.}
 
 \subsection*{Colour legend}
 This document will follow a highlighting scheme where text highlighted in different colors mean the following:
@@ -44,9 +52,9 @@ This document will follow a highlighting scheme where text highlighted in differ
 \hlpurple{Purple coloured text} - Interesting and unique points, that often are not mentioned explicitly in textbooks/literature.
 
 \section{About}
-The WeightField\footnote{The manual for this (first) version can be found at \href{http://personalpages.to.infn.it/~cartigli/Weightfield2/Manual_files/Manual_Weightfield.pdf}{here}} (WF) software is a tool used to simulate a variety of silicon detectors: different versions have been updated over time to study a variety of silicon sensors. As the name suggest, the WeightField2\footnote{Main link to manuals/guides - \href{http://personalpages.to.infn.it/~cartigli/Weightfield2/Manual.html}{http://personalpages.to.infn.it/~cartigli/Weightfield2/Manual.html}.} (WF2) software is the second iteration of WF. The weighting potential is calculated by solving for the Laplace equation using numerical methods (which also involves interpolation), and the induced current is calculated using the Shockley-Ramo theorem. An important piece of information that you probably should keep at the back of your head is that ``the backplane is at the bottom and the strips on the top edge with the readout strip being always centered".
+The WeightField\footnote{The manual for this (first) version can be found at \href{http://personalpages.to.infn.it/~cartigli/Weightfield2/Manual_files/Manual_Weightfield.pdf}{here}} (WF) software is a tool used to simulate a variety of silicon detectors: different versions have been updated over time to study a variety of silicon sensors. As the name suggests, the WeightField2\footnote{Main link to manuals/guides - \href{http://personalpages.to.infn.it/~cartigli/Weightfield2/Manual.html}{http://personalpages.to.infn.it/~cartigli/Weightfield2/Manual.html}.} (WF2) software is the second iteration of WF. An important step in detector simulations is the calculation of the electric and weighting fields, and only then the induced current calculations follow. For WF and WF2, the weighting potential is calculated by solving for the Laplace equation using numerical methods (which also involves interpolation), and the induced current is calculated using the Shockley-Ramo theorem. %An important piece of information that one should keep at the back of your head while using this software is that ``the backplane is at the bottom and the strips on the top edge with the readout strip being always centered".
 
-WF2-RSD (WF2 - Resistive Silicon Detectors) is a version of software that rolled-out after WF2. The primary objective of this tool is to simulate RSDs (or also known as AC-LGADs). In some parts of the code, I believe (and this is a personal opinion) that quantities being calculated are mimicing the experimental results and not truly simulating the physics behind such processes. This might also partly be because we still don't know what is happening in AC-LGADs, for example, the signal induction to the AC pads.
+WF2-RSD (WF2 - Resistive Silicon Detectors) is a version of software that rolled-out after WF2. The primary objective of this tool is to simulate RSDs (or also known as AC-LGADs). In some parts of the code, I believe (and this is a personal opinion) that quantities being calculated are mimicking the experimental results and not truly simulating the physics behind such processes. This might also partly be because we still don't know what is happening in AC-LGADs, for example, the signal induction to the AC pads.
 \newline
 Two references that explain some working principles of WF2-RSD are \cite{wf2-rsd-working-principles} and \cite{Tornago2021}. The former discusses the models used to calculate the charge sharing (among different pads) and signal delay and the later is a more detailed article on the same.
 \newline
@@ -54,7 +62,7 @@ WF2-RSD differs from WF2 in the following aspects:
 \begin{enumerate}
     \item Resistive layer - capability to simulate a resistive layer with a user-defined resistivity.
     \item Addition of circular pads (instead of strips) by default - User can change number of pads, and packing (square and hexagonal packing of the pads).
-    \item Naturally, the signal induction calculation has been updated, and the signal sharing model (Logarithmic attenuation model \cite{Tornago2021}) has been included.
+    \item Naturally, the signal induction calculation has been updated, and the signal sharing model (Logarithmic attenuation model \cite{Tornago2021}) has also been included.
 \end{enumerate}
 
 \section{Input Panel Variables/Quantities}
@@ -62,7 +70,7 @@ The WF2-RSD front-end has many parameters and sections for plots and an example 
 \subsection{Panel: Detector properties}
 There are 3 detector types under the ``\textbf{Type}'' section (namely Silicon, diamond, and SiC). This refers to the type of material the detector is made of. Each option would involve different values for quanitities like dielectric constant, (e/h) mobilities, etc.
 \newline
-Since we are dealing with AC-LGADs, the next section ``\textbf{}'' would/should stay at n-type strips (referring to the n+ layer) and p-type bulk.
+Since we are dealing with AC-LGADs, in the next section ``\textbf{Doping Type}'' would only involve choosing n-type strips (referring to the n+ layer) and p-type bulk.
 \newline
 The options involved with the ``\textbf{Dimensions}" section and their description are as follows:
 \begin{enumerate}
@@ -86,8 +94,8 @@ The options involved with the ``\textbf{Dimensions}" section and their descripti
         \caption{Software settings and results for (a) 3 $\times$ 3 and (b) 5 $\times$ 5 pad structures.}
         \label{fig:ss_number_of_pads}
     \end{figure*}
-    \item Resistivity n+ layer - Refers to the resistivity of the n+ layer. \hlyellow{Check for changes in current for different resistivity values}. The sheet resistance is 1k$\Omega$/$\square$.
-    \item Thickness - The thickness of the detector (if one observes carefully, there is no consideration of pad thickness - which does not affect the potential values under the pads, i.e. in the detector volume). \hlyellow{The value that is assigned to this quantity is the thickness of the bulk substrate (active volume - where the primary charges are created by an incident radiation)}. The top left plot under drift-potential plots is the cross-sectional plot of the electric potential across the detector.
+    \item Resistivity n+ layer - Refers to the resistivity of the n+ layer. The sheet resistance is set to 1k$\Omega$/$\square$.\hlyellow{Check for changes in current for different resistivity values}.
+    \item Thickness - The thickness of the detector (if one observes carefully, there is no consideration of pad thickness - which does not affect the potential values under the pads, i.e. in the detector volume). The value that is assigned to this quantity is the thickness of the bulk substrate (active volume - where the primary charges are created by an incident radiation). The top left plot under drift-potential plots is the cross-sectional plot of the electric potential across the detector.
     \item Metal - The diameter of the circular pads (\href{http://personalpages.to.infn.it/~cartigli/Weightfield2/WF2_RSD_files/CERN_Cartiglia_modified.pdf}{Reference} - slide 16).
     \item Pitch - The distance between 2 adjacent pads. Should be greater than the metal diameter ofcourse.
 \end{enumerate}
@@ -103,7 +111,7 @@ The options' description for the ``\textbf{Gain}" section:
             \item There is one option with the word `Epi': it refers to an Epitaxial substrate. \hlyellow{Although as the setting suggests that the depth of the layer is 3 $\mu$m, but the effective doping plot shows that the layer begins somewhere between 199 $\mu$m and 200 $\mu$m (a small offset is also present for other implant settings).}
         \end{itemize}
     \item Forced gain value - According to Cartiglia's website manual, one can forcefully set a gain value, which in-turn removes the dependance from the bias voltage. A hint along the same direction to what is happening with this step can be understood from Figure 10 in\cite{ferrero-radiation-hardness}.
-    \item Impact-ionization models - Simulation of the gain mechanism through various models. The user has a choice between 4 models, namely, Van Overstraeten model, Okuto-Crowell model, Bologna model, and Massey-LGAD model. Table \ref{tab:impact-ionization-models} summarises some differences between these 4 models. It seems like 
+    \item Impact-ionization models - Simulation of the gain mechanism through various models. The user has a choice between 4 models, namely, Van Overstraeten model, Okuto-Crowell model, Bologna model, and Massey-LGAD model. Table \ref{tab:impact-ionization-models} summarises some differences between these 4 models.
 \end{enumerate}
 \begin{table}[!h]
     \centering
@@ -156,7 +164,7 @@ Changing parameters of the Charge Sensitive Amplifier (CSA), changes the (Broad-
 \newline
 First, some CAS and TI amplifier parameters were investigated: the noise and threshold voltages (of both CSA and TI) were varied to study what changes they introduce in the final output. A noise voltage of 0.001, 0.1, 1.5, 10, and 50 mV (while other parameters were kept constant) did not show any visible changes in the outputs. The same was done for threshold voltage for 0.001, 0.1, 1, 10, and 50 mV (while other parameters were kept constant) and no visible changes were seen in the output. \hlyellow{Understanding how noises are calculated and inculcated into the final output is yet to be done.}
 
-For the entirety of this report, unless mentioned otherwise, the legend for the plots from the ``Currents and Oscilloscope" tab is shown in Figure \ref{fig:wf2-legend}. If there are other colors in the plots, that most often represents the signal seen by the remaining AC-pads as only colors for two AC-pads are shown in the legend.
+For the entirety of this report, unless mentioned otherwise, the legend for the plots from the ``Currents and Oscilloscope" tab (which includes and is not limited to the signal from the AC-pads and the oscilloscope) is shown in Figure \ref{fig:wf2-legend}. If there are other colored lines in the plots than what is seen in the figure, that represents the signal seen by the remaining AC-pads as only colors for two AC-pads are shown in the legend.
 
 \begin{figure}[h]
     \centering
@@ -165,7 +173,7 @@ For the entirety of this report, unless mentioned otherwise, the legend for the 
     \label{fig:wf2-legend}
 \end{figure}
 
-\subsection{Panel: Select Particles}
+\subsection{Panel: Select Particles}\label{sec:select-particles}
 This subsection has been organised according to the particle type, as each particle type have a different set of options that can be configured. The user has an option to choose from Minimum Ionizing Particles (MIPs), X-Rays, Lasers, and a current pulse.
 \begin{enumerate}
     \item MIPs - User can define the incident position of the MIPs and the number of MIPs. The user can select the type of energy deposition:
@@ -194,6 +202,61 @@ A brief outline of the plots made in the ``\textbf{Drift Potential}" section is 
 \end{enumerate}
 
 \section{Brief review of the source code}
+
+A few sections of code that are important to know were understood and the same have been described in the following sub-sections. These sub-sections will be updated as more sections of the source code is decoded/interpreted.
+
+\subsection{Charge and current generation}
+Every electron/hole generated, an C++ object (from class \texttt{Carriers})is created that contains information like charge, position, velocity, etc. Most of the charge-generation and current-calculations are done in the file Carriers.cxx. As mentioned in Section \ref{sec:select-particles}, depending on the charge deposition mechanism the user chooses, an array called \texttt{NPairsPer5Micron} is updated with the number of primary charges per 5 $\mu$m in the sensor active volume, and objects of the \texttt{Carriers} class are created with position and charge information. There is a limit on the number of charges WF2 can track because there is a (large) fixed number of objects defined. 
+\newline Mobilities are defined and at each time-step, for each particle, the velocities and positions are updated (using the electric field and mobility values). The positions involve both updated from a diffusion and drift component. Then a temporary induced current value is updated based off of this movement for each charge that is calculated using Ramo's theorem. If the charge(s) is in the gain layer region, the user-defined gain model is used and new objects are added to the \texttt{Carriers} accordingly. One of the snippets that shows the calculation of the temporary current using Ramo's theorem from electrons (\texttt{ie[]}) and holes (\texttt{ih[]}) is shown below:
+\begin{lstlisting}
+    if (carriers[j].GetCharge()==-1)
+        ie[i]+=(-1)*(-1)*chargescale*ECHARGE*(wfield[PosBiny][PosBinx].GetFieldx()*carriers[j].GetVx() + wfield[PosBiny][PosBinx].GetFieldy()*carriers[j].GetVy());   
+	else
+		ih[i]+=(-1)*chargescale*ECHARGE*(wfield[PosBiny][PosBinx].GetFieldx()*carriers[j].GetVx()+ wfield[PosBiny][PosBinx].GetFieldy()*carriers[j].GetVy());
+\end{lstlisting}
+After this, the final current is calculated through a convolution of the (temporary) induced current and an exponential function (kernel). The snippet of code that does the same is as shown below:
+\begin{lstlisting}
+    for (int i=0;i<IMax-1;i++) //AC discharge
+	{
+	    for (int ll = 0; ll<IMaxSh-i;ll++)  // valid only up to IMaxSh 
+	    {
+		    CurrentStep =  itot[i]*TIMEUNIT/(tau_RSD)*TMath::Exp(-ll*TIMEUNIT/(tau_RSD));
+		    itotQ[i+ll] += -CurrentStep; //final current from the AC pads
+		    iDC[i+ll] += CurrentStep; // The current for DC contact
+	    }
+	}
+\end{lstlisting}
+The variable \texttt{tau\_RSD} involves the resistance and capcitance of the n+ layer and the oxide layer respectively.
+\newline
+The output of the oscilloscope, trans-impedance(/broad-band) amplifier, and the charge-sensitive amplifier (/shaper) can be summarised by the following snippet:
+\begin{lstlisting}
+    for (int ll = 0; ll<IMaxSh-i;ll+=Step)  // valid only up to IMaxSh 
+    {
+        Iout_C50[i+ll]   += (Qdif_Shaper)/tau_scope*TMath::Exp(-ll*TIMEUNIT/tau_scope); //Qdif_shaper is essentially the charge from the total induced current
+        Iout_BB_RC[i+ll] += (Qdif_Shaper)/tau_BBA*TMath::Exp(-ll*TIMEUNIT/tau_BBA); //Input current to the BBA, convolution with BW
+
+        Vout_scope[i+ll] = 50*Iout_C50[i+ll]; // Output Voltage Scope
+        BBGraph[i+ll] = 1e+3*BBGain*Iout_BB_RC[i+ll]; // Output Voltage BBA
+
+        // saturation of pre-amp output
+        if ( fabs(BBGraph[i+ll])>800)  BBGraph[i+ll] = 800*BBGraph[i+ll]/fabs(BBGraph[i+ll]);
+        //
+        if (! gui->GetNA62On())		    
+            {
+            ShaperOut_Q[i+ll] += TauFall/(TauFall+TauRise_CSA)*Qdif_Shaper*(TMath::Exp(-ll*TIMEUNIT/TauFall)-TMath::Exp(-ll*TIMEUNIT/TauRise_CSA)); // [Q] HS eq 4.3 This is the shaper
+            }
+        }
+\end{lstlisting}
+Ofcourse, there are some further improvisations that we will not get into, for examples, a finite linear interpolation that is done to the voltage outputs of the oscilloscope and amplifiers, there are further plots produced from these quantities, etc.
+
+\subsection{Signal sharing model(s)}
+Signal-sharing is a unique feature that AC-LGADs display and WF2-RSD simulates this effect by using the LOGarithmic-Attenuation (logA) model. The details of this model can be found in \cite{Tornago2021} alongwith another model that is discussed in the paper: LINear-Attenuation (linA) model. The linA model contains parameters (dependant on the geometry) that has to be experimentally determined and this is why WF2-RSD cannot use this model for signal-sharing simulations. The logA model however can derive the signal-sharing fractions without the need for experimental data. The only limiting factor is that the validity of this model was verified upto distances of 400-500 $\mu$m in \cite{Tornago2021}. The logA model empirically-argues that the signal-sharing fraction is governed by the following equation:
+\begin{equation}
+F_i\left(\alpha_i, d_i\right)=\frac{\frac{\alpha_i}{\ln \left(d_i / d_0\right)}}{\sum_1^n \frac{\alpha_i}{\ln \left(d_i / d_0\right)}}
+\end{equation}
+where $F_i$ is the fraction of the total signal amplitude seen on the pad $i, d_i$ the distance from the hit point to the pad $i$ metal edge, and $\alpha_i$ the pad $i$ angle of view. \cite{Tornago2021} also goes on to state that this equation predicts without any free parameter how a signal is shared among pads for every RSD geometry, $n^{+}$resistivity, and dielectric thickness, as the signal sharing depends on the relative resistance of each path, and not on its absolute value.
+
+Once WF2-RSD calculates the total signal induced (which is found through the use of the Ramo's theorem and a convolution), the signals induced in each pad are just this fraction multiplied with the total signal.
 
 \section{Reductionist studies of input parameters}\label{sec:full_analysis}
 WF2-RSD utilises numerous user-defined parameters that have a broad range of effects on the final results. The following sub-sections will describe the (reductionist) study performed on some of these parameters and the results obtained thereafter. By default, the word 'signal' would be used to refer to the AC pad signal in the following sub-sections.
@@ -346,12 +409,12 @@ The documentation for the simulation tool is not present for the RSD version of 
     \label{fig:recreate_kita_amp_vs_ccp}
 \end{figure*}
 
-\subsection{Updates in different versions}
-WF2\_5.4 has another update with regard to choosing AC/DC coupling on the top-readout surface, a feature that WF2\_5.17 does not have. Additionally, some other physics models for the gain layer (which is called as ``gain parameterisation'' in Cartiglia's website) seem to have been added.
-\newline
-That said, WF2-RSD does not have the option to introduced AC-coupling in the readout, so can we not fully simulate AC-LGADs? According to one of Cartiglia's \href{https://indico.cern.ch/event/928957/contributions/3913535/attachments/2069369/3473666/FCCee_Cartiglia.pdf}{slides}, it seems like WF2-RSD is for AC coupled simulations by default.
-\newline
-I still have not deeply looked at the differences in WF2-RSD between version 5.15 and version 5.16.
+% \subsection{Updates in different versions}
+% WF2\_5.4 has another update with regard to choosing AC/DC coupling on the top-readout surface, a feature that WF2\_5.17 does not have. Additionally, some other physics models for the gain layer (which is called as ``gain parameterisation'' in Cartiglia's website) seem to have been added.
+% \newline
+% That said, WF2-RSD does not have the option to introduced AC-coupling in the readout, so can we not fully simulate AC-LGADs? According to one of Cartiglia's \href{https://indico.cern.ch/event/928957/contributions/3913535/attachments/2069369/3473666/FCCee_Cartiglia.pdf}{slides}, it seems like WF2-RSD is for AC coupled simulations by default.
+% \newline
+% I still have not deeply looked at the differences in WF2-RSD between version 5.15 and version 5.16.
 
 \bibliography{references}
 
