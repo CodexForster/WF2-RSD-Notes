@@ -10,6 +10,7 @@
 \usepackage{physics}
 \usepackage{soul}
 \usepackage{subcaption}
+\usepackage{verbatim}
 
 \definecolor{red2}{RGB}{255, 49, 49}
 \definecolor{green2}{RGB}{144, 238, 144}
@@ -187,10 +188,11 @@ A brief outline of the plots made in the ``\textbf{Drift Potential}" section is 
 
 \section{Reductionist studies of input parameters}\label{sec:full_analysis}
 WF2-RSD utilises numerous user-defined parameters that have a broad range of effects on the final results. The following sub-sections will describe the (reductionist) study performed on some of these parameters and the results obtained thereafter. By default, the word 'signal' would be used to refer to the AC pad signal in the following sub-sections.
+
 \subsection{n+ layer's resistivity}
 The dependance of the signal characteristic and gain on the resistivity of the n+ layer was studied, and specifically, if there were any changes to the depletion of the n+ layer (\cite{giacomini-lgad} states that doing so changes how much the n+ layer gets depleted).
 \newline
-Increasing the resistivity corresponded to the broadening of the signal's tail on the second lobe. Relevant figures for the same can be seen in Figure \ref{fig:n_resistivity}. The integral of the AC pad signal is 0 (involves a charging and discharging cycle \cite{Tornago2021}), and the RC value changes for different resistivities, which imply that a change in resistivity value will correspond to a change in the signal shape. A conclusive statement for the effect of resistivity on the gain value could not be made using WF2-RSD, atleast not for the values of resistivity that was used for the study.
+Results obtained show that increasing the resistivity corresponded to the broadening of the signal's tail on the second lobe and the relevant figures for the same can be seen in Figure \ref{fig:n_resistivity}. The integral of the AC pad signal is known to be 0 (involves a charging and discharging cycle \cite{Tornago2021}), and the RC value changes for different resistivities, which imply that a change in resistivity value will correspond to a change in the signal shape. However, a conclusive statement for the effect of resistivity on the gain value could not be made using WF2-RSD, atleast not for the values of resistivity that was used for the study.
 
 \begin{figure*}[h!]
     \centering
@@ -210,10 +212,10 @@ Increasing the resistivity corresponded to the broadening of the signal's tail o
     \label{fig:n_resistivity}
 \end{figure*}
 
-\hlyellow{The WF2-RSD tool produced a non-intuitive result for resistivity value = 0.0001. The positive lobe of the signal had a much larger amplitude than those of the other resistivity values.}
+\hlyellow{Another point to note is that WF2-RSD produced a non-intuitive result for resistivity value = 0.0001. The positive lobe of the signal had a much larger amplitude than those of the other resistivity values.}
 
 \subsection{Thickness}
-Amongst the early silicon sensors (that had no gain layer), the thickness did not affect the amplitude of the signal because of two factors: the number of initial charges produced is proportional to the thickness, and the weighting field is inversely proportional to the thickness. In AC-LGADs however, things are not so simple. It was observed that increasing thickness broadens the tail of the first lobe as expected, because the positive charges need to travel a larger distance. A non-intuitive observation is that the amplitude/height of the first lobe is inversely proportional to the thickness. That said, the first lobe of the signal broadens for thicker detectors which intuitively makes sense as the holes generated in the active volume will need longer time to traverse a larger distance.
+Amongst the early silicon sensors (that had no gain layer), the thickness did not affect the amplitude of the signal because of two factors contributing to this property: the number of initial charges produced is proportional to the thickness, and the weighting field is inversely proportional to the thickness. In AC-LGADs however, things are not so simple. The simulation results showed that the amplitude/height of the first lobe is inversely proportional to the thickness. That said, the first lobe of the signal broadens for thicker detectors which is expected as the holes generated in the active volume will need longer time to traverse a larger distance.
 
 \begin{figure*}[h!]
     \centering
@@ -241,8 +243,29 @@ This study was done for thicknesses in steps of 50 $\mu$m, but the reason for lo
     \label{fig:maxEF_vs_thickness}
 \end{figure}
 
+\subsection{Pitch}
+The currents seen by the AC-pads for different pitches (and simultaneously maintaining the incident position of the charged particle to be at the center of 4 pads always) was simulated. As expected, the signals seen by four closest pads were the same as the sharing fraction remains the same. The motive of this study (and this was just a shot in the dark owing to the unlikeliness of the desired result) was to reach a limit where the resistance is of a lesser impedance value than that of the capacitive oxide. Reaching this limit would have implied all current goes to the DC contact and would not have any current going through the AC pads, and for the values the simulations were performed over, this limit was not reached. However, the results obtained still are as expected in that the signal sharing fractions would not change for the four nearby pads because the incident particle is in the middle of the four pads. Some images form this study are shown in Figure \ref{fig:varying_pitch}. This study was performed for pitches = 220, 300, 350 and 400 $\mu$m, and 220 $\mu$m instead of 200 $\mu$m was chosen because the pad diameter was set as 200 $\mu$m.
+
+\begin{figure*}[h!]
+    \centering
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=3in]{Images/varying_pitch_other_settings.png}
+        \caption{}
+        \label{fig:varying_pitch_other_settings}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=3in]{Images/varying_pitch_300umcase_plot.png}
+        \caption{}
+        \label{fig:varying_pitch_plot}
+    \end{subfigure}
+    \caption{(a) An image of the settings used for the study and (b) the electronic response plot for one of the pitch (=300 $\mu$m) values considered.}
+    \label{fig:varying_pitch}
+\end{figure*}
+
 \subsection{Time delay from hit position}
-Depending on where the incident particle hits the sensor, the signal takes a finite non-zero time taken to reach the electronics. This arises due to the time needed by the charges to reach the electrode, or more specifically, the wirebond. In a centimeter-scale AC-LGAD paper \cite{madrid2023}, it was reported that for farther hit positions on the strip from the wirebond, the time delay increases. Simulations were done for pad diameters (200, 300, 400, and 450 $\mu$m) and varying y-coordinates (100, 150, 200, 250, and 600 $\mu$m) for the same x-coordinate (20$\mu$m away from the end of the pad). Although the terminal prints a number for the delay, this is calculated by the LogA model for signal sharing and the objective of this study was to observe the physics simulation to naturally introduce time delays in waveforms for different AC pads. In WF2-RSD, the current and electronic response of a sensor was simulated for different hit positions (in the gap region). A conclusive correlation between this time-delay and distance from the center of the pads to the incident position, was not found. This statement could atleast be made only for the geometries that was tried. It could be the case that the strips displaying this behavior in the above stated paper were of larger order of lengths, hence this effect might not be prominent in smaller pad sizes.
+Depending on where the incident particle hits the sensor, the signal takes a finite non-zero time taken to reach the electronics. This arises due to the time needed by the charges to reach the electrode, or more specifically, the wirebond. In a centimeter-scale AC-LGAD paper \cite{madrid2023}, it was reported that for farther hit positions on the strip from the wirebond, the time delay increases. Simulations were done for pad diameters (200, 300, 400, and 450 $\mu$m) and varying y-coordinates (100, 150, 200, 250, and 600 $\mu$m) for the same x-coordinate (20$\mu$m away from the end of the pad). Although the terminal prints a number for the delay, this is calculated by the LogA model for signal sharing and the objective of this study was to observe the physics simulation to naturally introduce time delays in waveforms for AC pads of different dimensions. This time delay would be arising from the non-zero time taken by the charges travelling through the electrode to reach the wirebond. In WF2-RSD, the current and electronic response of a sensor was simulated for different hit positions (in the gap region). A conclusive correlation between this time-delay and distance from the center of the pads to the incident position, was not found. This statement could atleast be made only for the geometries that was tried. It could be the case that the strips displaying this behavior in the above stated paper were of larger order of lengths, hence this effect might not be prominent in smaller pad sizes. The source code also does not have scope to perform this calculations for this kind of a mechanism.
 
 \begin{figure*}[h!]
     \centering
@@ -262,7 +285,7 @@ Depending on where the incident particle hits the sensor, the signal takes a fin
 \end{figure*}
 
 \subsection{Coupling capacitance: pad size}
-There are two ways to vary coupling capacitance: varying the diameter of the pads (on the front panel (GUI) of the software) and by varying the oxide layer thickness. Changing geometry is known to introduce other effects like inter-strip capacitance so the former method wouldn't be a proper reductionist study. The details of the second way to vary coupling capacitance (by varying the thickness of the oxide layer) will be discussed in Section \ref{sec:varying-ccp-code}. The results of this study are shown in Figure \ref{fig:varying_pad_size}. We see that smaller pads offer a path of greater impedance so more current reached the DC terminal than the AC pads.
+There are two ways to vary coupling capacitance: varying the diameter of the pads (on the front panel (GUI) of the software) and by varying the oxide layer thickness. Changing geometry is known to introduce other effects like inter-strip capacitance so the former method wouldn't be a proper reductionist study. The details of the second way to vary coupling capacitance (by varying the thickness of the oxide layer) will be discussed in Section \ref{sec:varying-ccp-code}. The results of this study are shown in Figure \ref{fig:varying_pad_size}. We see that smaller pads offer a path of greater impedance so more current reached the DC terminal than the AC pads. Another inference from Figure \ref{fig:varying_pad_size} is that since smaller pads have smaller capacitance, the tails of the second lobe will also have be smaller.
 
 \begin{figure*}[h!]
     \centering
@@ -282,17 +305,19 @@ There are two ways to vary coupling capacitance: varying the diameter of the pad
     \label{fig:varying_pad_size}
 \end{figure*}
 
-\subsubsection{Attempt to reproduce experimental results}
-An article \cite{kita2023} reported results on the dependence of signal amplitude for different capacitances for pixel-electrode AC-LGADs. The respective plot is shown in Figure \ref{fig:kita_amp_vs_ccp}. A sensor of pitch 150 $\mu$m and square pad of width 140 $\mu$m was used. 
+\subsection{Coupling capacitance: capacitance/area of oxide layer - an attempt to reproduce experimental results}\label{sec:varying-ccp-code}
+An article \cite{kita2023} reported results on the dependence of signal amplitude for different capacitances for pixel-electrode AC-LGADs.  For this study, a sensor of pitch 150 $\mu$m and square pad of width 140 $\mu$m was used and the subsequent plot the authors obtained is shown in Figure \ref{fig:kita_amp_vs_ccp}.
 
 \begin{figure*}[h!]
     \centering
     \includegraphics[width=3in]{Images/kita_amp_vs_ccp.png}
-    \caption{The signal size evaluated using $^{90}$Sr as a function of C$_{cp}$. Each colored point corresponds to fixed sheet resistance value.}
+    \caption{The signal size evaluated using $^{90}$Sr as a function of C$_{cp}$. Each colored point corresponds to fixed sheet resistance value. Source: \cite{kita2023}}
     \label{fig:kita_amp_vs_ccp}
 \end{figure*}
 
-Using similar parameter values, an attempt was made to recreate the same plot using WF2-RSD. The only unknown was the doping concentration of the gain layer, which was not mentioned in the paper, thus this value was set to a typical number. The settings used and the results thus obtained is shown in Figure \ref{fig:recreate_kita_amp_vs_ccp}. It is worth mentioning that for this study, 100 events were simulated in the batch mode, and each event had one MIP traversing through the detector depositing charge according to a Landau distribution.
+As mentioned earlier, a way to change the coupling capacitance without changing the electrode geometry is by varying the oxide layer thickness, which translates to changing the capacitance/area value of the oxide layer in the source code. Using the similar parameter values used in the article, an attempt was made to recreate the same plot using WF2-RSD. The only unknown was the doping concentration of the gain layer, which was not mentioned in the paper, thus this quanitity was set to close to WF2-RSD's default value. The settings used and the results thus obtained is shown in Figure \ref{fig:recreate_kita_amp_vs_ccp}. It is worth mentioning that for this study, 100 events were simulated in the batch mode, and each event had one MIP traversing through the detector depositing charge according to a Landau distribution.
+
+The documentation for the simulation tool is not present for the RSD version of WF2 but we believe that the variable named \texttt{rsdc1} (that is brought up in calculating the time constants (RC)) found in the Carriers.cxx file is related to the capacitance/area quantity. The signal size (from the AC pads) for different values of \texttt{rsdc1} was simulated and the plot thus obtained is shown in Figure \ref{fig:recreate_kita_amp_vs_ccp}.
 
 \begin{figure*}[h!]
     \centering
@@ -311,9 +336,6 @@ Using similar parameter values, an attempt was made to recreate the same plot us
     \caption{(a) An image of the settings used for the study and (b) the plot of the compiled results obtained as part of this study. The X-axis (rsdc1) is the variable in the source code that corresponds to the capacitance/area. \hlyellow{Example: an rsdc1 value of 0.0002 = 200pF/mm$^2$.} The two colored curves correspond to two different sheet resistances (0.4$\equiv$400$\Omega/\square$ and 1.6$\equiv$1600$\Omega/\square$).}
     \label{fig:recreate_kita_amp_vs_ccp}
 \end{figure*}
-
-\subsection{Coupling capacitance: capacitance/area of oxide layer}\label{sec:varying-ccp-code}
-As mentioned earlier, a way to change the coupling capacitance without changing the electrode geometry is by varying the oxide layer thickness, which translates to changing the capacitance/area value of the oxide layer in the source code.
 
 \subsection{Updates in different versions}
 WF2\_5.4 has another update with regard to choosing AC/DC coupling on the top-readout surface, a feature that WF2\_5.17 does not have. Additionally, some other physics models for the gain layer (which is called as ``gain parameterisation'' in Cartiglia's website) seem to have been added.
