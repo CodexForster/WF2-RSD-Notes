@@ -113,7 +113,7 @@ The options' description for the ``\textbf{Gain}" section:
     \item Forced gain value - According to Cartiglia's website manual, one can forcefully set a gain value, which in-turn removes the dependance from the bias voltage. A hint along the same direction to what is happening with this step can be understood from Figure 10 in\cite{ferrero-radiation-hardness}.
     \item Impact-ionization models - Simulation of the gain mechanism through various models. The user has a choice between 4 models, namely, Van Overstraeten model, Okuto-Crowell model, Bologna model, and Massey-LGAD model. Table \ref{tab:impact-ionization-models} summarises some differences between these 4 models.
 \end{enumerate}
-\begin{table}[!h]
+\begin{table}[h]
     \centering
     \begin{tabular}{|c|c|c|}
         \hline
@@ -141,8 +141,8 @@ The options' description for the ``\textbf{Gain}" section:
     \caption{Some differences between the impact-ionization models that can be used in WF2-RSD.}
     \label{tab:impact-ionization-models}
 \end{table}
-\cite{arcidiacono-irradiation} found that the gain layer produced in Low Diffusion (LD-narrower layer profile) is more radiation resistant than the High Diffusion (HD) type; (ii) the co-implantation of carbon in the gain layer volume improves by a factor of $\approx$2 the radiation resistance. \cite{ferrero-radiation-hardness} additionally found that Gallium doping is less radiation resistant than Boron doping, and that narrower gain layer implants are more radiation resistant than wider implants.
-
+An article \cite{arcidiacono-irradiation} reports that the gain layer produced in Low Diffusion (LD-narrower layer profile) is more radiation resistant than the High Diffusion (HD) type; (ii) the co-implantation of carbon in the gain layer volume improves by a factor of $\approx$2 the radiation resistance. Another article \cite{ferrero-radiation-hardness} additionally reports that Gallium doping is less radiation resistant than Boron doping, and that narrower gain layer implants are more radiation resistant than wider implants.
+% CSA (TI) in input panel is the shaper (BB) in source code
 \subsection{Panel: Electronics}
 \begin{enumerate}
     \item Detector capacitance
@@ -151,19 +151,15 @@ The options' description for the ``\textbf{Gain}" section:
     \begin{itemize}
         \item Input resistance
         \item Rise time/ fall time
-        \item Trans-impedance
+        \item Trans-Impedance (TI)
         \item Noise and threshold voltage
     \end{itemize}
-    \item Broad-Band Amplifier (renamed as TI in WF2-RSD):
+    \item Broad-Band Amplifier (referred to as the shaper in the source code):
     \begin{itemize}
         \item Bandwidth and gain
         \item Noise and threshold voltage
     \end{itemize}
 \end{enumerate}
-Changing parameters of the Charge Sensitive Amplifier (CSA), changes the (Broad-Band) BB amplifier output. This probably suggests that we are looking at a readout `chain' (sensor $\rightarrow$ CSA $\rightarrow$ TI) and not two independent amplifier outputs. \hlyellow{Although this is not evident when looking at the code for how these two quantities are calculated.}
-\newline
-First, some CAS and TI amplifier parameters were investigated: the noise and threshold voltages (of both CSA and TI) were varied to study what changes they introduce in the final output. A noise voltage of 0.001, 0.1, 1.5, 10, and 50 mV (while other parameters were kept constant) did not show any visible changes in the outputs. The same was done for threshold voltage for 0.001, 0.1, 1, 10, and 50 mV (while other parameters were kept constant) and no visible changes were seen in the output. \hlyellow{Understanding how noises are calculated and inculcated into the final output is yet to be done.}
-
 For the entirety of this report, unless mentioned otherwise, the legend for the plots from the ``Currents and Oscilloscope" tab (which includes and is not limited to the signal from the AC-pads and the oscilloscope) is shown in Figure \ref{fig:wf2-legend}. If there are other colored lines in the plots than what is seen in the figure, that represents the signal seen by the remaining AC-pads as only colors for two AC-pads are shown in the legend.
 
 \begin{figure}[h]
@@ -172,6 +168,10 @@ For the entirety of this report, unless mentioned otherwise, the legend for the 
     \caption{The legend for the plots containing the response of the AC-pads, DC contact, and the oscilloscope (thin-grey line).}
     \label{fig:wf2-legend}
 \end{figure}
+
+Changing parameters of the Charge Sensitive Amplifier (CSA), changes the (Broad-Band) BB amplifier output. This probably suggests that we are looking at a readout `chain' (sensor $\rightarrow$ CSA $\rightarrow$ TI) and not two independent amplifier outputs. \hlyellow{Although this is not evident when looking at the code for how these two quantities are calculated.}
+\newline
+First, some CAS and TI amplifier parameters were investigated: the noise and threshold voltages (of both CSA and TI) were varied to study what changes they introduce in the final output. A noise voltage of 0.001, 0.1, 1.5, 10, and 50 mV (while other parameters were kept constant) did not show any visible changes in the outputs. The same was done for threshold voltage for 0.001, 0.1, 1, 10, and 50 mV (while other parameters were kept constant) and no visible changes were seen in the output. \hlyellow{Understanding how noises are calculated and inculcated into the final output is yet to be done.}
 
 \subsection{Panel: Select Particles}\label{sec:select-particles}
 This subsection has been organised according to the particle type, as each particle type have a different set of options that can be configured. The user has an option to choose from Minimum Ionizing Particles (MIPs), X-Rays, Lasers, and a current pulse.
@@ -416,6 +416,7 @@ The documentation for the simulation tool is not present for the RSD version of 
 % \newline
 % I still have not deeply looked at the differences in WF2-RSD between version 5.15 and version 5.16.
 
+\newpage
 \bibliography{references}
 
 \end{document}
