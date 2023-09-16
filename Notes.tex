@@ -417,6 +417,13 @@ The documentation for the simulation tool is not present for the RSD version of 
 % I still have not deeply looked at the differences in WF2-RSD between version 5.15 and version 5.16.
 
 \newpage
+\appendix
+\section{Electronics - frequency response}\label{app:electronic-response}
+Before delving into the details of some common concepts of electronic response let us walk through two common terminologies used: decibel and bandwidth (in context of oscilloscopes). 
+\newline A decibel is a relative unit of measurement and when we say the amplitude has changed by a factor of 3 dB, this implies the amplitude has changed by a factor of $\sqrt{2}$. Note that decibel can also be used in context of change in power, in which case 3 dB can mean a change-factor of 2.
+\newline An oscilloscope typically will have a bandwidth specified and it is usually the 3dB bandwidth (the meaning will be explained soon). Let us explain what this means through an example: An oscilloscope with bandwidth = 1 GHz implies that a sine wave with frequency above 1 GHz will have it's amplitude degraded by more than 3 dB. Trying to look at a signal that is too fast for a scope's bandwidth will introduce errors in amplitude and/or time-interval measurements. \cite{hp-catalog-oscilloscopes}
+
+\newpage
 \bibliography{references}
 
 \end{document}
