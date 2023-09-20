@@ -28,7 +28,7 @@ language=C++}
 \newcommand{\hlred}[1]{{\sethlcolor{red2}\hl{#1}}}
 \newcommand{\hlpurple}[1]{{\sethlcolor{purple2}\hl{#1}}}
 
-\bibliographystyle{unsrt}%abbrv} % We choose the "plain" reference style
+\bibliographystyle{plain}%abbrv} % We choose the "plain" reference style
 
 \title{Notes on Weightfield2 - Resistive Silicon Detectors}
 \author{Danush Shekar\\ Supervised by Dr. Zhenyu Ye}
@@ -421,7 +421,34 @@ The documentation for the simulation tool is not present for the RSD version of 
 \section{Electronics - frequency response}\label{app:electronic-response}
 Before delving into the details of some common concepts of electronic response let us walk through two common terminologies used: decibel and bandwidth (in context of oscilloscopes). 
 \newline A decibel is a relative unit of measurement and when we say the amplitude has changed by a factor of 3 dB, this implies the amplitude has changed by a factor of $\sqrt{2}$. Note that decibel can also be used in context of change in power, in which case 3 dB can mean a change-factor of 2.
-\newline An oscilloscope typically will have a bandwidth specified and it is usually the 3dB bandwidth (the meaning will be explained soon). Let us explain what this means through an example: An oscilloscope with bandwidth = 1 GHz implies that a sine wave with frequency above 1 GHz will have it's amplitude degraded by more than 3 dB. Trying to look at a signal that is too fast for a scope's bandwidth will introduce errors in amplitude and/or time-interval measurements. \cite{hp-catalog-oscilloscopes}
+\newline An oscilloscope typically will have a bandwidth specified and it is usually the 3dB bandwidth (the meaning will be explained soon). Let us explain what this means through an example: An oscilloscope with bandwidth = 1 GHz implies that a sine wave with frequency above 1 GHz will have it's amplitude degraded by more than 3 dB. Trying to look at a signal that is too fast for a scope's bandwidth will introduce errors in amplitude and/or time-interval measurements. \cite{hp-catalog-oscilloscopes}.
+\newline For a unit step voltage as the input, an oscilloscope will have a corrseponding response: it would take a non-zero time for the output to go from 10 - 90\% of the steady state value and this is given by 2.2$\times\tau$. Let us look at how this equation is obtained:
+\newline The frequency response of an oscilloscope is closely similar to that of the 1st order, RC low-pass filter \cite{thorLabs-BW-risetime}. A device with a bandwidth essentially drops out components of the input with a frequency above the bandwidth, similar to that of a low-pass filter. The relationship between the output voltage and the input voltage for a low-pass filter is well known to be:
+\begin{equation}\label{eq:rc-output}
+    V_{out} = V_{in}\left(1 - \exp(-\frac{t}{\tau})\right)
+\end{equation}
+where $\tau$ = RC, R and C being the resistance and capacitance used to make the low-pass filter. If at $t_1$, the signal reaches 10\% of it's amplitude and at a later time $t_2$ the signal reached 90\% of it's amplitude, we use Equation \ref{eq:rc-output} and with a little manipulation, we obtain:
+$$
+\begin{aligned}
+&t_1 = -\tau ln(0.9)\\
+&t_2 = -\tau ln(0.1)
+\end{aligned}
+$$
+\begin{equation}\label{eq:risetime-tau-relation}
+    \Rightarrow t_2 - t_1 \equiv T_r = \tau ln(9)
+\end{equation}
+We also know (in the frequeny-domain) that the cut-off frequency is given by:
+$$
+\omega = 2\pi f = \frac{1}{RC}
+$$ 
+Thus we have:
+\begin{equation}\label{eq:tau-bw-relation}
+    \tau = \frac{1}{2\pi f} = \frac{1}{2\pi B}
+\end{equation}
+where B is the bandwidth. Then combining results from Equation \ref{eq:rc-output} and \ref{eq:tau-bw-relation}, we obtain:
+\begin{equation}\label{eq:risetime-BW-relation}
+    T_r = \frac{0.35}{2.2\times B}
+\end{equation}
 
 \newpage
 \bibliography{references}
